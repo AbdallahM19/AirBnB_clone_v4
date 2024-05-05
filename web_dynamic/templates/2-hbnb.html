@@ -9,11 +9,13 @@
     <link type="text/css" rel="stylesheet" href="../static/styles/8-places.css?{{ cache_id }}">
     <link rel="icon" href="../static/images/icon.png?{{ cache_id }}"/>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../static/scripts/1-hbnb.js?{{ cache_id }}"></script>
+    <script src="../static/scripts/2-hbnb.js?{{ cache_id }}"></script>
     <title>HBnB</title>
 </head>
 <body>
 <header>
+    <!-- Add the new div element with specified attributes -->
+    <div id="api_status" class="available"></div>
     <div class="logo"></div>
 </header>
 <div class="container">
@@ -25,7 +27,7 @@
                 <ul>
                     {% for state in states|dictsort %}
                     <li>
-                        <h2>{{ state[0]}}:</h2>
+                        <h2>{{ state[0] }}:</h2>
                         <ul>
                             {% for city in state[1].cities|sort(attribute='name') %}
                             	<li>{{ city.name }}</li>
