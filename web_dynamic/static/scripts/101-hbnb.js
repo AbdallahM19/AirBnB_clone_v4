@@ -1,37 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let selectedAmenities = {};
-    let selectedStates = {};
-    let selectedCities = {};
+  const selectedAmenities = {};
+  const selectedStates = {};
+  const selectedCities = {};
 
-    function updateAmenities() {
-        let selectedAmenitiesList = Object.values(selectedAmenities);
-        let amenitiesString = selectedAmenitiesList.join(", ");
-        $(".amenities h4").text(amenitiesString);
+  function updateAmenities () {
+    const selectedAmenitiesList = Object.values(selectedAmenities);
+    const amenitiesString = selectedAmenitiesList.join(', ');
+    $('.amenities h4').text(amenitiesString);
+  }
+
+  $(".amenities input[type='checkbox']").change(function () {
+    const amenityId = $(this).data('id');
+    const amenityName = $(this).data('name');
+    if ($(this).is(':checked')) {
+      selectedAmenities[amenityId] = amenityName;
+    } else {
+      delete selectedAmenities[amenityId];
     }
+    updateAmenities();
+  });
 
-    $(".amenities input[type='checkbox']").change(function () {
-        let amenityId = $(this).data("id");
-        let amenityName = $(this).data("name");
-        if ($(this).is(":checked")) {
-            selectedAmenities[amenityId] = amenityName;
-        } else {
-            delete selectedAmenities[amenityId];
-        }
-        updateAmenities();
-    });
-
-    $(".locations input[type='checkbox']").change(function () {
-        let locationId = $(this).data("id");
-        let locationName = $(this).data("name");
-        if ($(this).is(":checked")) {
-            if ($(this).parent().find("ul").length > 0) {
-                selectedStates[locationId] = locationName;
-            } else {
-                selectedCities[locationId] = locationName;
-        }
+  $(".locations input[type='checkbox']").change(function () {
+    const locationId = $(this).data('id');
+    const locationName = $(this).data('name');
+    if ($(this).is(':checked')) {
+      if ($(this).parent().find('ul').length > 0) {
+        selectedStates[locationId] = locationName;
       } else {
-        if ($(this).parent().find("ul").length > 0) {
-          delete selectedStates[locationId];
+        selectedCities[locationId] = locationName;
+      }
+    } else {
+      if ($(this).parent().find('ul').length > 0) {
+        delete selectedStates[locationId];
       } else {
         delete selectedCities[locationId];
       }
@@ -60,17 +60,17 @@ document.addEventListener('DOMContentLoaded', function () {
         data.forEach(place => {
           const article = document.createElement('article');
           article.innerHTML = `
-                    <div class="title_box">
-                        <h2>${place.name}</h2>
-                        <div class="price_by_night">$${place.price_by_night}</div>
-                    </div>
-                    <div class="information">
-                        <div class="max_guest">${place.max_guest} Guest${place.max_guest !== 1 ? 's' : ''}</div>
-                        <div class="number_rooms">${place.number_rooms} Bedroom${place.number_rooms !== 1 ? 's' : ''}</div>
-                        <div class="number_bathrooms">${place.number_bathrooms} Bathroom${place.number_bathrooms !== 1 ? 's' : ''}</div>
-                    </div>
-              <div class="description">${place.description}</div>
-            `;
+                  <div class="title_box">
+                      <h2>${place.name}</h2>
+                      <div class="price_by_night">$${place.price_by_night}</div>
+                  </div>
+                  <div class="information">
+                      <div class="max_guest">${place.max_guest} Guest${place.max_guest !== 1 ? 's' : ''}</div>
+                      <div class="number_rooms">${place.number_rooms} Bedroom${place.number_rooms !== 1 ? 's' : ''}</div>
+                      <div class="number_bathrooms">${place.number_bathrooms} Bathroom${place.number_bathrooms !== 1 ? 's' : ''}</div>
+                  </div>
+            <div class="description">${place.description}</div>
+          `;
           placesSection.appendChild(article);
         });
       })
