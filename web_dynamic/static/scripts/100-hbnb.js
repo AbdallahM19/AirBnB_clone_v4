@@ -1,47 +1,47 @@
 document.addEventListener('DOMContentLoaded', function () {
-  let selectedAmenities = {};
-  let selectedStates = {};
-  let selectedCities = {};
+  const selectedAmenities = {};
+  const selectedStates = {};
+  const selectedCities = {};
 
-  function updateAmenities() {
-    let selectedAmenitiesList = Object.values(selectedAmenities);
-    let amenitiesString = selectedAmenitiesList.join(", ");
-    $(".amenities h4").text(amenitiesString);
+  function updateAmenities () {
+    const selectedAmenitiesList = Object.values(selectedAmenities);
+    const amenitiesString = selectedAmenitiesList.join(', ');
+    $('.amenities h4').text(amenitiesString);
   }
 
   $(".amenities input[type='checkbox']").change(function () {
-    let amenityId = $(this).data("id");
-    let amenityName = $(this).data("name");
-    if ($(this).is(":checked")) {
-        selectedAmenities[amenityId] = amenityName;
+    const amenityId = $(this).data('id');
+    const amenityName = $(this).data('name');
+    if ($(this).is(':checked')) {
+      selectedAmenities[amenityId] = amenityName;
     } else {
-        delete selectedAmenities[amenityId];
+      delete selectedAmenities[amenityId];
     }
     updateAmenities();
   });
 
   $(".locations input[type='checkbox']").change(function () {
-    let locationId = $(this).data("id");
-    let locationName = $(this).data("name");
-    if ($(this).is(":checked")) {
-      if ($(this).parent().find("ul").length > 0) {
+    const locationId = $(this).data('id');
+    const locationName = $(this).data('name');
+    if ($(this).is(':checked')) {
+      if ($(this).parent().find('ul').length > 0) {
         selectedStates[locationId] = locationName;
       } else {
         selectedCities[locationId] = locationName;
       }
     } else {
-      if ($(this).parent().find("ul").length > 0) {
+      if ($(this).parent().find('ul').length > 0) {
         delete selectedStates[locationId];
       } else {
         delete selectedCities[locationId];
       }
     }
-    let selectedLocations = Object.values({...selectedStates, ...selectedCities});
-    let locationsString = selectedLocations.join(", ");
-    $(".locations h4").text(locationsString);
+    const selectedLocations = Object.values({ ...selectedStates, ...selectedCities });
+    const locationsString = selectedLocations.join(', ');
+    $('.locations h4').text(locationsString);
   });
 
-  function searchPlaces() {
+  function searchPlaces () {
     fetch('http://0.0.0.0:5001/api/v1/places_search/', {
       method: 'POST',
       headers: {
@@ -53,15 +53,14 @@ document.addEventListener('DOMContentLoaded', function () {
         cities: Object.keys(selectedCities)
       })
     })
-    .then(response => response.json())
-    .then(data => {
+      .then(response => response.json())
+      .then(data => {
+        const placesSection = document.querySelector('.places');
+        placesSection.innerHTML = '';
 
-      const placesSection = document.querySelector('.places');
-      placesSection.innerHTML = '';
-
-      data.forEach(place => {
-        const article = document.createElement('article');
-        article.innerHTML = `
+        data.forEach(place => {
+          const article = document.createElement('article');
+          article.innerHTML = `
           <div class="title_box">
             <h2>${place.name}</h2>
             <div class="price_by_night">$${place.price_by_night}</div>
@@ -73,12 +72,12 @@ document.addEventListener('DOMContentLoaded', function () {
           </div>
           <div class="description">${place.description}</div>
           `;
-        placesSection.appendChild(article);
+          placesSection.appendChild(article);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching places data:', error);
       });
-    })
-    .catch(error => {
-      console.error('Error fetching places data:', error);
-    });
   }
   document.querySelector('button').addEventListener('click', searchPlaces);
 });

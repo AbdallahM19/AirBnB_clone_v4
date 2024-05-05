@@ -15,7 +15,7 @@ def teardown_db(exception):
     storage.close()
 
 
-@app.route('/4-hbnb', strict_slashes=False)
+@app.route('/100-hbnb', strict_slashes=False)
 def hbnb():
     """Display a HTML page like 8-index.html"""
     amenities = storage.all('Amenity').values()
@@ -27,7 +27,7 @@ def hbnb():
     users = dict([x.id, "{} {}".format(x.first_name, x.last_name)]
                  for x in users_args)
     return render_template(
-        '4-hbnb.html',
+        '100-hbnb.html',
         states=states,
         cities=cities,
         amenities=amenities,

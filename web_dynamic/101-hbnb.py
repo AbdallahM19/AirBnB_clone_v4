@@ -5,7 +5,6 @@ from flask import Flask, render_template
 from models import storage
 import uuid
 
-
 app = Flask(__name__)
 
 
@@ -15,19 +14,21 @@ def teardown_db(exception):
     storage.close()
 
 
-@app.route('/4-hbnb', strict_slashes=False)
+@app.route('/101-hbnb', strict_slashes=False)
 def hbnb():
-    """Display a HTML page like 8-index.html"""
+    """Display a HTML page like 100-hbnb.html"""
     amenities = storage.all('Amenity').values()
     states_args = storage.all('State').values()
     states = dict([i.name, i] for i in states_args)
     cities = storage.all('City').values()
     places = storage.all('Place').values()
     users_args = storage.all('User').values()
-    users = dict([x.id, "{} {}".format(x.first_name, x.last_name)]
-                 for x in users_args)
+    users = dict(
+        [x.id, "{} {}".format(x.first_name, x.last_name)]
+        for x in users_args
+    )
     return render_template(
-        '4-hbnb.html',
+        '101-hbnb.html',
         states=states,
         cities=cities,
         amenities=amenities,
