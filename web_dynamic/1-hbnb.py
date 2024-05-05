@@ -27,7 +27,7 @@ def hbnb():
     users = dict([x.id, "{} {}".format(x.first_name, x.last_name)]
                  for x in users_args)
     return render_template(
-        '0-hbnb.html',
+        '1-hbnb.html',
         states=states,
         cities=cities,
         amenities=amenities,
