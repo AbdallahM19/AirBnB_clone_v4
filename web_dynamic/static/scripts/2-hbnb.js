@@ -1,32 +1,32 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let selectedAmenities = {};
+  const selectedAmenities = {};
 
-    function updateAmenities() {
-        let selectedAmenitiesList = Object.values(selectedAmenities);
-        let amenitiesString = selectedAmenitiesList.join(", ");
-        $(".amenities h4").text(amenitiesString);
+  function updateAmenities () {
+    const selectedAmenitiesList = Object.values(selectedAmenities);
+    const amenitiesString = selectedAmenitiesList.join(', ');
+    $('.amenities h').text(amenitiesString);
+  }
+
+  $(".amenities input[type='checkbox']").change(function () {
+    const amenityId = $(this).data('id');
+    const amenityName = $(this).data('name');
+    if ($(this).is(':checked')) {
+      selectedAmenities[amenityId] = amenityName;
+    } else {
+      delete selectedAmenities[amenityId];
     }
-
-    $(".amenities input[type='checkbox']").change(function () {
-        let amenityId = $(this).data("id");
-        let amenityName = $(this).data("name");
-        if ($(this).is(":checked")) {
-            selectedAmenities[amenityId] = amenityName;
-        } else {
-            delete selectedAmenities[amenityId];
-        }
-        updateAmenities();
+    updateAmenities();
+  });
+  fetch('http://0.0.0.0:5001/api/v1/status/')
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'OK') {
+        document.getElementById('api_status').classList.add('available');
+      } else {
+        document.getElementById('api_status').classList.remove('available');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching API status:', error);
     });
-    fetch('http://0.0.0.0:5001/api/v1/status/')
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'OK') {
-                document.getElementById('api_status').classList.add('available');
-            } else {
-                document.getElementById('api_status').classList.remove('available');
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching API status:', error);
-        });
 });
